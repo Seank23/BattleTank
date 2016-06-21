@@ -9,7 +9,7 @@ void ATankPlayerController::BeginPlay()
 
 	if (GetControlledTank())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *GetControlledTank()->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("Player: %s"), *GetControlledTank()->GetName());
 	}
 	else
 	{
@@ -17,9 +17,32 @@ void ATankPlayerController::BeginPlay()
 	}
 }
 
+void ATankPlayerController::Tick(float deltaTime)
+{
+	Super::Tick(deltaTime);
+
+	AimAtCrosshair();
+}
+
 ATank* ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());
+}
+
+void ATankPlayerController::AimAtCrosshair()
+{
+	if (!GetControlledTank()) { return; }
+
+	FVector hitLocation;
+	if (GetHitLocation(hitLocation))
+	{
+
+	}
+}
+
+bool ATankPlayerController::GetHitLocation(FVector& hitLocation) const
+{
+	return false;
 }
 
 
