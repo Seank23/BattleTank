@@ -36,12 +36,29 @@ void ATankPlayerController::AimAtCrosshair()
 	FVector hitLocation;
 	if (GetHitLocation(hitLocation))
 	{
-
+		GetControlledTank()->AimAt(hitLocation);
 	}
 }
 
 bool ATankPlayerController::GetHitLocation(FVector& hitLocation) const
 {
+	int32 viewportSizeX, viewportSizeY;
+	FVector cameraLocation, lookDirection;
+
+	GetViewportSize(viewportSizeX, viewportSizeY);
+	FVector2D screenLocation = FVector2D(viewportSizeX * crosshairX, viewportSizeY * crosshairY);
+
+	if (DeprojectScreenPositionToWorld(screenLocation.X, screenLocation.Y, cameraLocation, lookDirection))
+	{
+		FHitResult hit;
+		FVector rayEnd = cameraLocation + (lookDirection * rayDistance);
+
+		if (GetWorld()->LineTraceSingleByChannel(hit, cameraLocation, rayEnd, ECollisionChannel::ECC_Visibility))
+		{
+			hitLocation = hit.Location;
+			return true;
+		}
+	}
 	return false;
 }
 
