@@ -25,7 +25,7 @@ void UTankAimingComponent::AimAt(FVector aimLocation, float launchSpeed)
 	FVector outLaunchVelocity;
 	FVector startLocation = barrel->GetSocketLocation(FName("Projectile"));
 
-	if (UGameplayStatics::SuggestProjectileVelocity(this, outLaunchVelocity, startLocation, aimLocation, launchSpeed))
+	if (UGameplayStatics::SuggestProjectileVelocity(this, outLaunchVelocity, startLocation, aimLocation, launchSpeed, false, 0, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		FVector aimDirection = outLaunchVelocity.GetSafeNormal();
 		MoveBarrel(aimDirection);
@@ -35,8 +35,8 @@ void UTankAimingComponent::AimAt(FVector aimLocation, float launchSpeed)
 void UTankAimingComponent::MoveBarrel(FVector aimDirection)
 {
 	FRotator barrelRotation = barrel->GetForwardVector().Rotation();
-	FRotator targetRotation = barrelRotation - aimDirection.Rotation();
-
-	barrel->Elevate(5);
+	FRotator targetRotation = aimDirection.Rotation() - barrelRotation;
+	UE_LOG(LogTemp,Warning, TEXT("Rotation this frame: %f"), targetRotation.Pitch)
+	barrel->Elevate(targetRotation.Pitch);
 }
 

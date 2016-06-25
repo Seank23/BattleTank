@@ -3,9 +3,13 @@
 #include "BattleTank.h"
 #include "TankBarrel.h"
 
-void UTankBarrel::Elevate(float degsPerSecond)
+void UTankBarrel::Elevate(float relativeSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%f"), degsPerSecond);
+	relativeSpeed = FMath::Clamp(relativeSpeed, -1.0f, 1.0f);
+	float elevationChange = relativeSpeed * maxDegsPerSecond * GetWorld()->DeltaTimeSeconds;
+	float newElevation = FMath::Clamp(RelativeRotation.Pitch + elevationChange, minElevation, maxElevation);
+
+	SetRelativeRotation(FRotator(newElevation, 0, 0));
 }
 
 
