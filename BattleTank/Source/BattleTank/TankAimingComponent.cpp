@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "TankAimingComponent.h"
 
 
@@ -16,11 +17,12 @@ UTankAimingComponent::UTankAimingComponent()
 
 
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* barrel) { this->barrel = barrel; }
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* barrel) { if(barrel) this->barrel = barrel; }
+void UTankAimingComponent::SetTurretReference(UTankTurret* turret) { if(turret) this->turret = turret; }
 
 void UTankAimingComponent::AimAt(FVector aimLocation, float launchSpeed)
 {
-	if (!barrel) { return; }
+	if (!barrel || !turret) { return; }
 
 	FVector outLaunchVelocity;
 	FVector startLocation = barrel->GetSocketLocation(FName("Projectile"));
@@ -28,15 +30,17 @@ void UTankAimingComponent::AimAt(FVector aimLocation, float launchSpeed)
 	if (UGameplayStatics::SuggestProjectileVelocity(this, outLaunchVelocity, startLocation, aimLocation, launchSpeed, false, 0, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		FVector aimDirection = outLaunchVelocity.GetSafeNormal();
-		MoveBarrel(aimDirection);
+		MoveTurretAndBarrel(aimDirection);
 	}
 }
 
-void UTankAimingComponent::MoveBarrel(FVector aimDirection)
+void UTankAimingComponent::MoveTurretAndBarrel(FVector aimDirection)
 {
 	FRotator barrelRotation = barrel->GetForwardVector().Rotation();
 	FRotator targetRotation = aimDirection.Rotation() - barrelRotation;
-	UE_LOG(LogTemp,Warning, TEXT("Rotation this frame: %f"), targetRotation.Pitch)
 	barrel->Elevate(targetRotation.Pitch);
+	turret->Rotate(targetRotation.Yaw);
 }
+
+
 

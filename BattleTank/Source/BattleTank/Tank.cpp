@@ -3,6 +3,7 @@
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "Tank.h"
 
 
@@ -32,6 +33,7 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 
 
 void ATank::SetBarrelReference(UTankBarrel* barrel) { tankAimingComponent->SetBarrelReference(barrel); }
+void ATank::SetTurretReference(UTankTurret* turret) { tankAimingComponent->SetTurretReference(turret); }
 
 void ATank::AimAt(FVector hitLocation)
 {
