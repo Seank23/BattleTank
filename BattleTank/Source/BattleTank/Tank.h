@@ -19,6 +19,8 @@ public:
 		void SetBarrelReference(UTankBarrel* barrel);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetTurretReference(UTankTurret* turret);
+	UFUNCTION(BlueprintCallable, Category = Fire)
+		void Fire();
 
 	void AimAt(FVector);
 
