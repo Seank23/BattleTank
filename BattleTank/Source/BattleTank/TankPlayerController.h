@@ -20,10 +20,10 @@ private:
 	void AimAtCrosshair();
 	bool GetHitLocation(FVector&) const;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float crosshairX = 0.5;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float crosshairY = 0.3333;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		int32 rayDistance = 1000000;
 };
