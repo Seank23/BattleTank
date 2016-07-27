@@ -15,6 +15,8 @@ class BATTLETANK_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+		void SetLocalBarrel(UTankBarrel* barrel);
 	UFUNCTION(BlueprintCallable, Category = "Fire")
 		void Fire();
 
@@ -25,6 +27,8 @@ protected:
 		UTankAimingComponent* aimingComponent = nullptr;
 
 private:
+	void BeginPlay() override;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		TSubclassOf<AProjectile> projectileBP;
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
@@ -32,6 +36,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float reloadTime = 3.0f;
 
-	double lastFireTime = 0;
 	UTankBarrel* localBarrel = nullptr;
+
+	double lastFireTime = 0;	
 };

@@ -19,8 +19,8 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::Initialise(UTankBarrel* myBarrel, UTankTurret* myTurret)
 {
-	myBarrel = barrel;
-	myTurret = turret;
+	barrel = myBarrel;
+	turret = myTurret;
 }
 
 void UTankAimingComponent::AimAt(FVector aimLocation, float launchSpeed)

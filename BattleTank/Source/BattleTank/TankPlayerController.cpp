@@ -9,11 +9,7 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GetControlledTank())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Player: %s"), *GetControlledTank()->GetName());
-	}
-	else
+	if (!GetControlledTank())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController not possessing a tank"));
 	}
