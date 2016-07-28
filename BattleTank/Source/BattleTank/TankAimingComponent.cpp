@@ -3,6 +3,7 @@
 #include "BattleTank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 #include "TankAimingComponent.h"
 
 
@@ -23,7 +24,18 @@ void UTankAimingComponent::Initialise(UTankBarrel* myBarrel, UTankTurret* myTurr
 	turret = myTurret;
 }
 
-void UTankAimingComponent::AimAt(FVector aimLocation, float launchSpeed)
+void UTankAimingComponent::Fire()
+{
+	bool isReloaded = (FPlatformTime::Seconds() - lastFireTime) > reloadTime;
+
+	if (!isReloaded || !ensure(barrel) || !ensure(projectileBP)) { return; }
+
+	AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, barrel->GetSocketLocation(FName("Projectile")), barrel->GetSocketRotation(FName("Projectile")));
+	projectile->LaunchProjectile(launchSpeed);
+	lastFireTime = FPlatformTime::Seconds();
+}
+
+void UTankAimingComponent::AimAt(FVector aimLocation)
 {
 	if (!ensure(barrel) || !ensure(turret)) { return; }
 
