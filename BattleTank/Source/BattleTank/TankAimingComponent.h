@@ -37,6 +37,10 @@ protected:
 		EFiringStatus firingStatus = EFiringStatus::Reloading;
 
 private:
+	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
+	bool IsBarrelMoving();
 	void MoveTurretAndBarrel(FVector);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
@@ -51,4 +55,6 @@ private:
 		float reloadTime = 3.0f;
 
 	double lastFireTime = 0;
+
+	FVector aimDirection;
 };
