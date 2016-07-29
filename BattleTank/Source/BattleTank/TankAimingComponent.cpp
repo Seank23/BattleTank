@@ -25,8 +25,6 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::TickComponent(float deltaTime, ELevelTick tickType, FActorComponentTickFunction* thisTickFunction)
 {
-	Super::TickComponent(deltaTime, tickType, thisTickFunction);
-
 	if ((FPlatformTime::Seconds() - lastFireTime) < reloadTime)
 	{
 		firingStatus = EFiringStatus::Reloading;
@@ -42,6 +40,8 @@ void UTankAimingComponent::TickComponent(float deltaTime, ELevelTick tickType, F
 }
 
 
+
+EFiringStatus UTankAimingComponent::GetFiringStatus() const { return firingStatus; }
 
 void UTankAimingComponent::Initialise(UTankBarrel* myBarrel, UTankTurret* myTurret)
 {
@@ -79,7 +79,7 @@ bool UTankAimingComponent::IsBarrelMoving()
 {
 	if (!ensure(barrel)) { return false; }
 
-	return !barrel->GetForwardVector().Equals(aimDirection, 0.1f);
+	return !barrel->GetForwardVector().Equals(aimDirection, 0.01f);
 }
 
 void UTankAimingComponent::MoveTurretAndBarrel(FVector aimDirection)
@@ -89,7 +89,15 @@ void UTankAimingComponent::MoveTurretAndBarrel(FVector aimDirection)
 	FRotator barrelRotation = barrel->GetForwardVector().Rotation();
 	FRotator targetRotation = aimDirection.Rotation() - barrelRotation;
 	barrel->Elevate(targetRotation.Pitch);
-	turret->Rotate(targetRotation.Yaw);
+
+	if (FMath::Abs(targetRotation.Yaw > 180))
+	{
+		turret->Rotate(180 - targetRotation.Yaw);
+	}
+	else
+	{
+		turret->Rotate(targetRotation.Yaw);
+	}
 }
 
 

@@ -13,8 +13,6 @@ void UTankMovementComponent::Initialise(UTankTrack* lTrack, UTankTrack* rTrack)
 void UTankMovementComponent::IntendedForwardMove(float offset)
 {
 	if (!ensure(leftTrack) || !ensure(rightTrack)) { return; }
-	if (offset > 1) { offset = 1; }
-	if (offset < -1) { offset = -1; }
 
 	leftTrack->SetThrottle(offset);
 	rightTrack->SetThrottle(offset);
@@ -23,8 +21,6 @@ void UTankMovementComponent::IntendedForwardMove(float offset)
 void UTankMovementComponent::IntendedTurnRight(float offset)
 {
 	if (!ensure(leftTrack) || !ensure(rightTrack)) { return; }
-	if (offset > 1) { offset = 1; }
-	if (offset < -1) { offset = -1; }
 
 	leftTrack->SetThrottle(offset);
 	rightTrack->SetThrottle(-offset);
@@ -34,7 +30,8 @@ void UTankMovementComponent::RequestDirectMove(const FVector& moveVelocity, bool
 {
 	FVector tankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
 	FVector targetVelocity = moveVelocity.GetSafeNormal();
-	//float targetOffset = FVector::DotProduct(tankForward, targetVelocity);
+
+	//float targetForwardMovement = FVector::DotProduct(tankForward, targetVelocity);
 
 	float targetForwardMovement = ((tankForward.X * targetVelocity.X) + (tankForward.Y * targetVelocity.Y) + (tankForward.Z * targetVelocity.Z))
 			/ (sqrt(pow(tankForward.X, 2) + pow(tankForward.Y, 2) + pow(tankForward.Z, 2)) * sqrt(pow(targetVelocity.X, 2) + pow(targetVelocity.Y, 2) + pow(targetVelocity.Z, 2)));

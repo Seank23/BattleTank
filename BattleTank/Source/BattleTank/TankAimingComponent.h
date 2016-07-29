@@ -32,13 +32,15 @@ public:
 
 	void AimAt(FVector);
 
+	EFiringStatus GetFiringStatus() const;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 		EFiringStatus firingStatus = EFiringStatus::Reloading;
 
 private:
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+	virtual void TickComponent(float deltaTime, enum ELevelTick tickType, FActorComponentTickFunction* thisTickFunction) override;
 
 	bool IsBarrelMoving();
 	void MoveTurretAndBarrel(FVector);
