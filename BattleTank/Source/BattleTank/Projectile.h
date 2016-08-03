@@ -11,12 +11,12 @@ class BATTLETANK_API AProjectile : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AProjectile();
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
 	void LaunchProjectile(float);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float destroyDelay = 5.0f;
 
 protected:
 	UProjectileMovementComponent* projectileMovementComponent = nullptr;
@@ -32,4 +32,6 @@ protected:
 private:
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* hitComponent, AActor* otherActor, UPrimitiveComponent* otherComp, FVector normalImpulse, const FHitResult& hit);
+
+	void OnTimerExpire();
 };
