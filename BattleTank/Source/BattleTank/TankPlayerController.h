@@ -20,6 +20,10 @@ private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float deltaTime) override;
 
+	virtual void SetPawn(APawn* pawn) override;
+
+	UFUNCTION()
+		void OnPlayerDeath();
 	
 	void AimAtCrosshair();
 	bool GetHitLocation(FVector&) const;

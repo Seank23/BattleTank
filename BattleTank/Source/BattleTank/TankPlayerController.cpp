@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
 #include "TankPlayerController.h"
 
 void ATankPlayerController::BeginPlay()
@@ -24,6 +25,24 @@ void ATankPlayerController::Tick(float deltaTime)
 }
 
 
+
+void ATankPlayerController::SetPawn(APawn* pawn)
+{
+	Super::SetPawn(pawn);
+
+	if (pawn)
+	{
+		ATank* myTank = Cast<ATank>(pawn);
+		if (!ensure(myTank)) { return; }
+
+		myTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPlayerDeath);
+	}
+}
+
+void ATankPlayerController::OnPlayerDeath()
+{
+	StartSpectatingOnly();
+}
 
 void ATankPlayerController::AimAtCrosshair()
 {

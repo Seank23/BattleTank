@@ -15,9 +15,6 @@ public:
 	virtual void BeginPlay() override;
 	void LaunchProjectile(float);
 
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		float destroyDelay = 5.0f;
-
 protected:
 	UProjectileMovementComponent* projectileMovementComponent = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Setup")
@@ -34,4 +31,9 @@ private:
 		void OnHit(UPrimitiveComponent* hitComponent, AActor* otherActor, UPrimitiveComponent* otherComp, FVector normalImpulse, const FHitResult& hit);
 
 	void OnTimerExpire();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float destroyDelay = 5.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float projectileDamage = 20.0f;
 };
